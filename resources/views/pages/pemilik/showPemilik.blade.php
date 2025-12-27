@@ -26,8 +26,21 @@
     @endif
 
     <div class="card">
-        <div class="card-header fw-bold">
+        <div class="card-header d-flex justify-content-between align-items-center">
             Tabel Data Pemilik (Total: {{ $pemilik->total() }} Data)
+            <form action="/pemilik" method="GET" class="d-flex gap-2" style="width: 450px">
+                <input type="text" name="keyword" class="form-control" 
+                    placeholder="Cari sesuatu..." 
+                    value="{{ request('keyword') }}"> 
+                    <button type="submit" style="width: 130px" class="btn btn-warning">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Cari
+                </button>
+                
+                @if(request('keyword'))
+                    <a href="/pemilik" style="width: 130px" class="btn btn-outline-secondary">Reset</a>
+                @endif
+            </form>
         </div>
         
         <div class="card-body">
@@ -70,7 +83,7 @@
                         @empty
                         <tr>
                             <td colspan="6" class="text-center text-muted">
-                                Belum ada data pemilik.
+                                Data Pemilik Tidak Ada
                             </td>
                         </tr>
                         @endforelse

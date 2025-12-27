@@ -8,22 +8,35 @@ use App\Models\Pemilik;
 
 class PemilikController extends Controller
 {
-    public function readPemilik(Request $request)
-    {
+    public function readPemilik(Request $request){
+        $search = $request->keyword;
+
+        $query = Pemilik::query();
+
+        // 2. Terapkan Filter PENCARIAN (Jika ada keyword)
+        $query->when($search, function($q, $search) {
+            return $q->where('nama_lengkap', 'like', "%{$search}%") 
+                    ->orWhere('alamat', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('nomor_telepon', 'like', "%{$search}%");
+        });
+
+        // 3. Eksekusi Query berdasarkan Mode
+        
         // SKENARIO 1: Tanpa Pagination (Load Semua Data)
         if ($request->query('mode') === 'all') {
-            
-            $pemilik = Pemilik::all(); 
-
+            // Ambil hasil dari $query yang sudah difilter di atas
+            $pemilik = $query->get(); 
             $is_paginated = false;
-
         } 
-        // SKENARIO 2: Server-Side Pagination (10 Item per Halaman)
+        // SKENARIO 2: Server-Side Pagination
         else {
+            $pemilik = $query->paginate(10);
             
-            $pemilik = Pemilik::paginate(10);
+            // PENTING: Append agar saat pindah halaman 2, kata kunci pencarian tidak hilang
+            $pemilik->appends(['keyword' => $search]);
+            
             $is_paginated = true;
-            
         }
 
         return view('pages.pemilik.showPemilik', compact('pemilik', 'is_paginated'));
