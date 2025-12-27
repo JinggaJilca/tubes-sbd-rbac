@@ -21,23 +21,25 @@
     <style>
         body {
             font-family: 'Inter', sans-serif !important;
+            background-color: #F6F0D7;
         }
         /* Mengubah Background Primary (Navbar, dll) */
         .bg-primary {
-            background-color: #C3E958 !important; /* Ganti kode warna sesuka hati */
+            background-color: #A1BC98 !important; /* Ganti kode warna sesuka hati */
+            border-color: #A1BC98 !important; 
         }
 
         /* Mengubah Tombol Primary */
         .btn-primary {
-            background-color: #C3E958 !important;
-            border-color: #C3E958 !important;
+            background-color: #8EB486 !important;
+            border-color: #8EB486 !important;
             color:#131313;
         }
 
         /* Mengubah Efek Saat Mouse di atas Tombol (Hover) */
         .btn-primary:hover {
-            background-color: #4D7111 !important; /* Warna sedikit lebih gelap */
-            border-color: #4D7111 !important;
+            background-color: #4B5945 !important; /* Warna sedikit lebih gelap */
+            border-color: #4B5945 !important;
         }
 
         .btn-warning{
@@ -53,14 +55,16 @@
         }
         
         .btn-danger {
-            background-color: #fd2b2b !important;
-            border-color: #fd2b2b !important;
+            background-color: #AE431E !important;
+            border-color: #AE431E !important;
+            color: #131313; 
         }
 
         /* Mengubah Efek Saat Mouse di atas Tombol (Hover) */
         .btn-danger:hover {
-            background-color: #c22424 !important; /* Warna sedikit lebih gelap */
-            border-color: #c22424 !important;
+            background-color: #7D0A0A !important; /* Warna sedikit lebih gelap */
+            border-color: #7D0A0A !important;
+            color: #ffffff; 
         }
         
         /* Mengubah Warna Teks Link/Outline */
@@ -87,7 +91,7 @@
          @yield('content')
     </div>
     {{-- @include('layout.footer') --}}
-
+ 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
 </html>
