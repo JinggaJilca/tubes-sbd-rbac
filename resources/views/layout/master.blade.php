@@ -39,6 +39,18 @@
             background-color: #4D7111 !important; /* Warna sedikit lebih gelap */
             border-color: #4D7111 !important;
         }
+
+        .btn-warning{
+            background-color: #4D7111 !important;
+            border-color: #4D711158 !important;
+            color:#ffffff;
+        }
+
+        .btn-warning:hover{
+            background-color: #30470b !important;
+            border-color: #30470b !important;
+            color:#ffffff;
+        }
         
         .btn-danger {
             background-color: #fd2b2b !important;
@@ -74,7 +86,7 @@
         <!-- ISI KONTEN DISINI -->
          @yield('content')
     </div>
-    @include('layout.footer')
+    {{-- @include('layout.footer') --}}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
