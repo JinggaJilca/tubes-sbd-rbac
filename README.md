@@ -46,27 +46,42 @@ Berikut adalah kredensial akun untuk pengujian aplikasi berdasarkan hak akses (R
 
 ## ⚙️ Cara Instalasi (Localhost)
 **📊 Unduh Database & Setup disini :** https://drive.google.com/drive/folders/16D1tTAsx0BV0Fep6obHcYGBlHVELgguS
-1.  **Clone Repository**
-    ```bash
-    git clone [https://github.com/username/project-petcare.git](https://github.com/username/project-petcare.git)
-    ```
-2.  **Install Dependency**
+
+### 1. Persiapan Awal
+* Pastikan **Laragon** (atau MySQL Server) sudah berjalan.
+* Pastikan **Composer** dan **Node.js** sudah terinstall.
+
+### 2. Setup Project
+1.  **Ekstrak/Clone Project** ke komputer Anda.
+2.  Buka terminal di folder project, lalu install dependency:
     ```bash
     composer install
     npm install && npm run build
     ```
-3.  **Setup Environment**
-    * Copy file `.env.example` menjadi `.env`.
-    * Atur konfigurasi database di file `.env`.
-4.  **Generate Key**
-    ```bash
-    php artisan key:generate
-    ```
-5.  **Migrasi & Seeding Database** (Penting untuk membuat akun di atas)
-    ```bash
-    php artisan migrate:fresh --seed
-    ```
-6.  **Jalankan Server**
-    ```bash
+3.  **Setup Environment**:
+    * Duplikat file `.env.example` dan ubah namanya menjadi `.env`.
+    * Generate key aplikasi:
+      ```bash
+      php artisan key:generate
+      ```
+
+### 3. Import Database (PENTING)
+1.  Buka **phpMyAdmin** (http://localhost/phpmyadmin) atau HeidiSQL
+2.  Buat database baru dengan nama: **`sbd_tubes`**.
+3.  Klik tab **Import**.
+4.  Pilih file **`<sbd_tubes_yang_telah_diuduh>.sql`** (atau nama file sql yang Anda sertakan) yang ada di dalam folder project ini.
+5.  Klik **Go/Kirim** dan tunggu hingga proses selesai.
+    *(Note: Proses mungkin memakan waktu beberapa saat karena jumlah data yang besar).*
+
+### 4. Konfigurasi Koneksi
+Buka file `.env` dan pastikan nama database sesuai dengan yang Anda buat tadi:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=sbd_tubes  <-- Sesuaikan ini
+DB_USERNAME=root
+DB_PASSWORD=
+```
+### 5. Jalankan Server
     php artisan serve
-    ```
