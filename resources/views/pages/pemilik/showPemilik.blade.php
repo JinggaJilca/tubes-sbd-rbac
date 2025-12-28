@@ -3,20 +3,46 @@
 
 @section('content')
 <div class="container mt-4">
-    <h3>Daftar Pemilik Hewan</h3>
-    <hr>
-    <div class="d-flex flex-wrap gap-2 mb-3">
-        
-        <a href="/pemilik/create" class="btn btn-primary">
-            <i class="fa-solid fa-plus me-2"></i>Tambah Data
-        </a>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3>Daftar Pemilik Hewan</h3>
 
-        <a href="{{ url('/pemilik') }}?mode=all" class="btn btn-danger">
-            <i class="fa-solid fa-layer-group me-1"></i> Tampilkan Semua Data
-        </a>
+        <div class="d-flex align-items-center gap-3">
+            {{-- 1. Bagian Teks & Badge --}}
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-muted">
+                    Halo, <strong class="text-dark">{{ auth()->user()->name }}</strong>
+                </span>
+                <span class="badge bg-primary text-uppercase">{{ auth()->user()->role }}</span>
+            </div>
 
+            <div class="vr" style="height: 25px;"></div>
+
+            {{-- Tombol Logout --}}
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-2" 
+                        onclick="return confirm('Yakin ingin keluar?')">
+                    <i class="fa-solid fa-right-from-bracket"></i> 
+                    <span>Keluar</span>
+                </button>
+            </form>
+
+        </div>
     </div>
-    
+    <hr>
+    @if(auth()->user()->role == 'admin' || auth()->user()->role == 'editor')
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            
+            <a href="/pemilik/create" class="btn btn-primary">
+                <i class="fa-solid fa-plus me-2"></i>Tambah Data
+            </a>
+
+            <a href="{{ url('/pemilik') }}?mode=all" class="btn btn-danger">
+                <i class="fa-solid fa-layer-group me-1"></i> Tampilkan Semua Data
+            </a>
+
+        </div>
+    @endif
     {{-- Notifikasi Create --}}
     @if(session('success'))
         <div class="alert alert-primary alert-dismissible fade show" role="alert">
@@ -27,7 +53,8 @@
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            Tabel Data Pemilik (Total: {{ $pemilik->total() }} Data)
+            Tabel Data Pemilik 
+            (Total: {{ $is_paginated ? $pemilik->total() : $pemilik->count() }} Data)
             <form action="/pemilik" method="GET" class="d-flex gap-2" style="width: 450px">
                 <input type="text" name="keyword" class="form-control" 
                     placeholder="Cari sesuatu..." 
@@ -49,11 +76,44 @@
                     <thead class="table-dark">
                         <tr>
                             <th scope="col">No</th>
-                            <th scope="col">Nama Lengkap</th>
-                            <th scope="col">Alamat</th>
-                            <th scope="col">No. Telepon</th>
-                            <th scope="col">Email</th>
-                            <th scope="col" style="width: 15%">Aksi</th>
+                            {{-- FUNCTION HELPER SEDERHANA UNTUK SORTING --}}
+                            @php
+                                // Fungsi untuk menentukan link & ikon sorting
+                                function sortUrl($column, $label) {
+                                    // Ambil parameter
+                                    $currentSort = request('sort_by', 'id_pemilik');
+                                    $currentDir  = request('direction', 'asc');
+                                    
+                                    // Tentukan arah selanjutnya (Jika sedang ASC, jadi DESC. Jika beda kolom, reset ke ASC)
+                                    $nextDir = ($currentSort == $column && $currentDir == 'asc') ? 'desc' : 'asc';
+                                    
+                                    // Buat URL baru (Gabungkan dengan keyword pencarian jika ada)
+                                    $url = request()->fullUrlWithQuery(['sort_by' => $column, 'direction' => $nextDir]);
+
+                                    // Tentukan Ikon
+                                    $icon = '<i class="fa-solid fa-sort text-muted ms-1"></i>'; // Default (netral)
+                                    if ($currentSort == $column) {
+                                        if ($currentDir == 'asc') {
+                                            $icon = '<i class="fa-solid fa-sort-up text-white ms-1"></i>';
+                                        } else {
+                                            $icon = '<i class="fa-solid fa-sort-down text-white ms-1"></i>';
+                                        }
+                                    }
+
+                                    // Return Link HTML
+                                    return "<a href='$url' class='text-white text-decoration-none d-flex justify-content-between align-items-center'>$label $icon</a>";
+                                }
+                            @endphp
+
+                            {{-- KOLOM DENGAN SORTING --}}
+                            <th scope="col">{!! sortUrl('nama_lengkap', 'Nama Lengkap') !!}</th>
+                            <th scope="col">{!! sortUrl('alamat', 'Alamat') !!}</th>
+                            <th scope="col">{!! sortUrl('nomor_telepon', 'No. Telepon') !!}</th>
+                            <th scope="col">{!! sortUrl('email', 'Email') !!}</th>
+
+                            @if(auth()->user()->role !== 'viewer')
+                                <th scope="col" style="width: 15%">Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -67,16 +127,19 @@
                             <td>{{ $item->email }}</td>
                             <td>
                                 <div class="d-flex gap-1">
-                                    <a href="/pemilik/{{$item->id_pemilik}}/edit" class="btn btn-warning btn-sm">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                        Edit
-                                    </a>
-        
+                                    @if(auth()->user()->role !== 'viewer')
+                                        <a href="/pemilik/{{$item->id_pemilik}}/edit" class="btn btn-warning btn-sm">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            Edit
+                                        </a>
+                                    @endif
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#hapus{{ $item->id_pemilik }}">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                        Hapus
-                                    </button>
+                                    @if(auth()->user()->role == 'admin')
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#hapus{{ $item->id_pemilik }}">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                            Hapus
+                                        </button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

@@ -13,11 +13,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Akun Admin
+            \App\Models\User::factory()->create([
+                'name' => 'Admin',
+                'email' => 'admin@test.com',
+                'role' => 'admin',
+                'password' => bcrypt('admin123'), // passwordnya: password
+            ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+            // Akun Editor
+            \App\Models\User::factory()->create([
+                'name' => 'Editor',
+                'email' => 'editor@test.com',
+                'role' => 'editor',
+                'password' => bcrypt('editor123'),
+            ]);
+
+            // Akun Viewer
+            \App\Models\User::factory()->create([
+                'name' => 'Viewer',
+                'email' => 'viewer@test.com',
+                'role' => 'viewer',
+                'password' => bcrypt('viewer123'),
+            ]);
     }
 }

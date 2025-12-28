@@ -10,33 +10,41 @@ class PemilikController extends Controller
 {
     public function readPemilik(Request $request){
         $search = $request->keyword;
+        
+        // 1. Ambil Parameter Sorting (Default: id_pemilik, ASC)
+        // Jika user tidak memilih, default urutkan berdasarkan ID
+        $sortBy = $request->input('sort_by', 'id_pemilik');
+        $direction = $request->input('direction', 'asc');
 
+        // 2. Validasi Kolom (PENTING untuk Keamanan)
+        // Agar user tidak bisa injeksi kolom ngawur di URL
+        $validColumns = ['nama_lengkap', 'alamat', 'nomor_telepon', 'email', 'id_pemilik'];
+        if (!in_array($sortBy, $validColumns)) {
+            $sortBy = 'id_pemilik';
+        }
+
+        // 3. Mulai Query
         $query = Pemilik::query();
 
-        // 2. Terapkan Filter PENCARIAN (Jika ada keyword)
+        // 4. Filter Pencarian
         $query->when($search, function($q, $search) {
-            return $q->where('nama_lengkap', 'like', "%{$search}%") 
-                    ->orWhere('alamat', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('nomor_telepon', 'like', "%{$search}%");
+            return $q->where('nama_lengkap', 'like', "%{$search}%")
+                    ->orWhere('alamat', 'like', "%{$search}%");
         });
 
-        // 3. Eksekusi Query berdasarkan Mode
-        
-        // SKENARIO 1: Tanpa Pagination (Load Semua Data)
+        // 5. TERAPKAN SORTING
+        $query->orderBy($sortBy, $direction);
+
+        // 6. Eksekusi Data (Pagination)
         if ($request->query('mode') === 'all') {
-            // Ambil hasil dari $query yang sudah difilter di atas
-            $pemilik = $query->get(); 
-            $is_paginated = false;
-        } 
-        // SKENARIO 2: Server-Side Pagination
-        else {
-            $pemilik = $query->paginate(10);
-            
-            // PENTING: Append agar saat pindah halaman 2, kata kunci pencarian tidak hilang
-            $pemilik->appends(['keyword' => $search]);
-            
+            $pemilik = $query->paginate(100); 
             $is_paginated = true;
+            // Jangan lupa append sort_by dan direction agar tidak hilang saat ganti halaman
+            $pemilik->appends(['keyword' => $search, 'mode' => 'all', 'sort_by' => $sortBy, 'direction' => $direction]);
+        } else {
+            $pemilik = $query->paginate(10);
+            $is_paginated = true;
+            $pemilik->appends(['keyword' => $search, 'sort_by' => $sortBy, 'direction' => $direction]);
         }
 
         return view('pages.pemilik.showPemilik', compact('pemilik', 'is_paginated'));

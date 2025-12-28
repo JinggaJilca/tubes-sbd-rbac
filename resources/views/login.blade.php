@@ -9,7 +9,7 @@
         <div class="col-md-4">
             <div class="card shadow-lg">
                 <div class="card-header text-center" style="background-color: #674636; color:white;">
-                    <h4 class="mb-0">Login</h4>
+                    <h4 class="mb-0 fw-bold">Login</h4>
                 </div>
 
                 <div class="card-body">
@@ -40,7 +40,7 @@
 
                         <button type="submit" class="btn btn-primary w-100">
                             <i class="fa-solid fa-right-to-bracket me-1"></i>
-                            Login
+                            Masuk 
                         </button>
                     </form>
                 </div>

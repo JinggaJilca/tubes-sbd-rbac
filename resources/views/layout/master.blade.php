@@ -25,15 +25,16 @@
         }
         /* Mengubah Background Primary (Navbar, dll) */
         .bg-primary {
-            background-color: #A1BC98 !important; /* Ganti kode warna sesuka hati */
-            border-color: #A1BC98 !important; 
+            background-color: #6d8664 !important;
+            border-color: #6d8664 !important;
+            color:#ffffff;
         }
 
         /* Mengubah Tombol Primary */
         .btn-primary {
             background-color: #8EB486 !important;
             border-color: #8EB486 !important;
-            color:#131313;
+            color:#ffffff;
         }
 
         /* Mengubah Efek Saat Mouse di atas Tombol (Hover) */
@@ -57,7 +58,7 @@
         .btn-danger {
             background-color: #AE431E !important;
             border-color: #AE431E !important;
-            color: #131313; 
+            color: #ffffff; 
         }
 
         /* Mengubah Efek Saat Mouse di atas Tombol (Hover) */
@@ -80,6 +81,12 @@
             border-color: #91EAB2 !important;
             color: #131313 !important;
         }
+        .badge.bg-primary{
+            background-color: #30470b !important;
+            border-color: #30470b !important;
+            color:#ffffff;
+        }
+
     </style>
 </head>
     <title>PetCare Clinic | RBAC</title>
