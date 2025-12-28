@@ -119,12 +119,17 @@
                     <tbody>
                         @forelse ($pemilik as $key => $item)
                         <tr>
-                            <th scope="row">{{ $pemilik->firstItem() + $key }}</th>
+                            {{-- PERBAIKAN DISINI: Kembalikan kolom Nomor Urut (bukan Total Data) --}}
+                            <th scope="row">
+                                {{-- Jika Paginasi: pakai rumus halaman. Jika All: pakai nomor urut biasa --}}
+                                {{ $is_paginated ? $pemilik->firstItem() + $key : $key + 1 }}
+                            </th>
                             
                             <td>{{ $item->nama_lengkap }}</td>
                             <td>{{ $item->alamat }}</td>
                             <td>{{ $item->nomor_telepon }}</td>
                             <td>{{ $item->email }}</td>
+                            
                             <td>
                                 <div class="d-flex gap-1">
                                     @if(auth()->user()->role !== 'viewer')
@@ -133,7 +138,7 @@
                                             Edit
                                         </a>
                                     @endif
-                                    <!-- Button trigger modal -->
+                                    
                                     @if(auth()->user()->role == 'admin')
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#hapus{{ $item->id_pemilik }}">
                                             <i class="fa-solid fa-trash-can"></i>
@@ -154,15 +159,15 @@
                 </table>
             </div>
 
-            @if($is_paginated)
-                <div class="mt-3">
-                    {{ $pemilik->links('vendor.pagination.custom-pagination') }}
-                </div>
-            @else
-                <div class="mt-3 alert alert-warning">
-                    Menampilkan seluruh data (Tanpa Pagination).
-                </div>
-            @endif
+                @if($is_paginated)
+                    <div class="mt-3">
+                        {{ $pemilik->links('vendor.pagination.custom-pagination') }}
+                    </div>
+                @else
+                    <div class="mt-3 alert alert-info">
+                        <i class="fa-solid fa-check-circle me-1"></i> Menampilkan seluruh data.
+                    </div>
+                @endif
         </div>
     </div>
 </div>

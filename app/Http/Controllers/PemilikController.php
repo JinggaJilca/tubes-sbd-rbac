@@ -37,9 +37,14 @@ class PemilikController extends Controller
 
         // 6. Eksekusi Data (Pagination)
         if ($request->query('mode') === 'all') {
-            $pemilik = $query->paginate(100); 
+            // ini_set('memory_limit', '-1'); 
+            // $pemilik = $query->get(); 
+            // $is_paginated = false;
+
+            //=== PAGINATE DENGAN 5.000 DATA
+            $pemilik = $query->paginate(5000); 
             $is_paginated = true;
-            // Jangan lupa append sort_by dan direction agar tidak hilang saat ganti halaman
+            
             $pemilik->appends(['keyword' => $search, 'mode' => 'all', 'sort_by' => $sortBy, 'direction' => $direction]);
         } else {
             $pemilik = $query->paginate(10);
