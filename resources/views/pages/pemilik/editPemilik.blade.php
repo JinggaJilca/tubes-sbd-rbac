@@ -1,12 +1,12 @@
-{{-- TEMPLATE ENGINE --}}
-@extends('layout.master')
+@extends('layout.sidebar')
 
 @section('content')
 <div class="container mt-4">
-    <h3>Edit Data Pemilik Hewan</h3>
-    <hr>
-    <div class="card-body">
-        <form action="/pemilik/{{$data->id_pemilik}}" method="POST">
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <h5 class="card-title fw-bold mb-4">Edit Data Pemilik Hewan</h5>
+            
+            <form action="/pemilik/{{$data->id_pemilik}}" method="POST">
             @method('PUT')
             @csrf
             <div class="row">
@@ -51,11 +51,18 @@
                     @enderror
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Update Data</button>
+            {{-- Tombol Aksi --}}
+                <div class="d-flex gap-2 justify-content-end">
+                    {{-- Tombol Batal Opsional --}}
+                    <a href="{{ url()->previous() }}" class="btn btn-outline-secondary px-4">Batal</a>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">
+                        <i class="fa-solid fa-save me-2"></i>Update Data
+                    </button>
+                </div>
         </form>
+        </div>
     </div>
-
-
-    
 </div>
 @endsection
+{{-- ====================================== --}}
+

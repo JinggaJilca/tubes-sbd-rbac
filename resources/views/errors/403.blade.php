@@ -26,7 +26,7 @@
         {{-- TOMBOL AKSI --}}
         <div class="d-flex justify-content-center gap-3">
             {{-- Tombol Kembali --}}
-            <a href="{{ url('/pemilik') }}" class="btn btn-lg text-white px-4" style="background-color: #674636;">
+            <a href="{{ url('/home') }}" class="btn btn-lg text-white px-4" style="background-color: #674636;">
                 <i class="fa-solid fa-arrow-left me-2"></i> Kembali ke Data
             </a>
             

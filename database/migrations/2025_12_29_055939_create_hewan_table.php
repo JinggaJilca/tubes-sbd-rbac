@@ -14,12 +14,17 @@ return new class extends Migration
         Schema::create('tb_hewan', function (Blueprint $table) {
 
             $table->id('id_hewan');
+            $table->unsignedBigInteger('id_pemilik');
             $table->string('nama_hewan');
             $table->enum('jenis_kelamin',['Jantan', 'Betina']);
             $table->year('tahun_kelahiran');
             $table->string('ras_hewan');
             $table->decimal('berat_hewan', total: 10, places: 2);
 
+            //Relasi Pemilik-Hewan
+            $table->foreign('id_pemilik')->references('id_pemilik')->on('tb_pemilik')->onDelete('cascade');
+
+            
             // $table->timestamps();
         });
     }

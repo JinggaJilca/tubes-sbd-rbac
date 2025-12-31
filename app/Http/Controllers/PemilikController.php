@@ -11,8 +11,6 @@ class PemilikController extends Controller
     public function readPemilik(Request $request){
         $search = $request->keyword;
         
-        // 1. Ambil Parameter Sorting (Default: id_pemilik, ASC)
-        // Jika user tidak memilih, default urutkan berdasarkan ID
         $sortBy = $request->input('sort_by', 'id_pemilik');
         $direction = $request->input('direction', 'asc');
 

@@ -25,7 +25,7 @@
                         @if ($page == $paginator->currentPage())
                             {{-- LOGIKA TOMBOL AKTIF (KUNING) --}}
                             <li class="page-item active" aria-current="page">
-                                <span class="page-link bg-primary border-primary text-dark fw-bold">{{ $page }}</span>
+                                <span class="page-link bg-secondary border-secondary text-light fw-bold">{{ $page }}</span>
                             </li>
                         @else
                             {{-- LOGIKA TOMBOL BIASA (ABU-ABU) --}}

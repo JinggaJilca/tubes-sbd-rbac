@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@test.com',
                 'role' => 'admin',
-                'password' => bcrypt('admin123'), // passwordnya: password
+                'password' => bcrypt('admin123'),
             ]);
 
             // Akun Editor
